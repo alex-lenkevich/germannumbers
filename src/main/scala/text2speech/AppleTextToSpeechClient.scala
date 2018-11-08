@@ -7,7 +7,7 @@ object AppleTextToSpeechClient {
       val script: String = s"say -v Anna $sentence"
       val runtime = Runtime.getRuntime
       runtime.exec(script)
-      Thread.sleep(2000)
+      Thread.sleep(1500)
     }
   }
 }

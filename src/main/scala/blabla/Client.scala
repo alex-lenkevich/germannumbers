@@ -19,4 +19,16 @@ class Client {
     )
   }
 
+  def requestGender(word: String): Option[String] = {
+    val cleaner = new HtmlCleaner
+    val root = cleaner.clean(new URL(s"https://de.bab.la/woerterbuch/deutsch-englisch/$word"))
+    root.getElementsByAttValue("class", "suffix", true, true).find {
+      x => String.valueOf(x.getText).matches("\\{(Neutrum|Maskulin|Feminin)\\}")
+    }.map(x => String.valueOf(x.getText).trim).map {
+      case "{Neutrum}" => "N"
+      case "{Maskulin}" => "M"
+      case "{Feminin}" => "F"
+    }
+  }
+
 }

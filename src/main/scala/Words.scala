@@ -95,7 +95,7 @@ object Words extends Exercise[(String, Method)] {
     "соответственно" -> "entsprechend",
     "загрузка" -> "Beladung",
     "стояночный свет" -> "das Standlicht",
-    "ближниый свет" -> "das Abblendlicht",
+    "ближний свет" -> "das Abblendlicht",
     "дальний свет" -> "das Fernlicht",
     "обогрев" -> "heizbare",
     "заднее стекло" -> "die Heckscheibe",
@@ -122,8 +122,9 @@ object Words extends Exercise[(String, Method)] {
   override def nextQuestion(i: Int): Question = {
 //    println(weights.toList.sortBy(-_._2))
     val wordsWeights: Map[String, Double] = words.keys.map(x => x -> weights.getOrElse(x, 1d)).toMap
-    println(wordsWeights.toList.sortBy(-_._2))
+    println(wordsWeights.toList.groupBy(_._2).mapValues(_.map(_._1)).toSeq.sortBy(_._1).map(x => s"${x._1}\n${x._2.mkString(", ")}").mkString("\n"))
     println("Progress: " + (wordsWeights.toList.map(_._2).sum / wordsWeights.size))
+    println()
     val rand: Double = Random.nextDouble() * wordsWeights.values.sum
     val question = wordsWeights.foldLeft("" -> 0d){case ((rkey, sum), (key, v)) => (if(sum <= rand) key else rkey) -> (sum + v)}._1
     val method = if(Random.nextBoolean()) Text2TextMethod else Voice2TextMethod
